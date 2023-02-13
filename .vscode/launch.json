@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Pdfpick",
+            "type": "python",
+            "request": "launch",
+            "program": "pdfpick.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "..\\1160-ACGME-Milestones-Report-2022-R22.pdf",
+                "1-26,98-101,133-136,326-329,374-377",
+                "dest.pdf"
+            ]
+        }
+    ]
+}
