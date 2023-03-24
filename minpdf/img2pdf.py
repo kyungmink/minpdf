@@ -9,6 +9,10 @@ from os.path import exists, splitext
 from io import BytesIO
 from pikepdf import Pdf
 
+__all__ = [
+  "upload_clean", "to_letter_ratio", "to_realsize_pdf", "chain_pdfs"
+]
+
 def upload_clean():
   '''Purely for Google Colab'''
   start = time()

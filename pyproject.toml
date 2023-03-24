@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minpdf"
+version = "0.0.1"
+authors = [
+    {name = "Kyungmin Ko", email = "funfrocks@gmail.com"},
+]
+dependencies = [
+    "img2pdf", "pikepdf"
+]
