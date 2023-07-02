@@ -105,7 +105,10 @@ def chain_pdfs(stem: str):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('stem')
+    parser.add_argument(
+      'stem',
+      help='If your image is named "Scan.jpg" just put "Scan".'
+    )
     parser.add_argument(
       '-d', '--dpi', type=int, default=300,
       help='DPI (dots per inch) of the source image.'
@@ -114,7 +117,3 @@ if __name__ == '__main__':
     for path in pathlib.Path().glob(f'{args.stem}*.jpg'):
         to_realsize_pdf(path, dpi=args.dpi, save_bytes_factor=1)
     chain_pdfs(args.stem)
-
-# pdfdata = img2pdf.convert(*[str(path) for path in pathlib.Path('.').glob('20221205*.jpg')])
-# with open('n.pdf', 'wb') as f:
-#     f.write(pdfdata)
