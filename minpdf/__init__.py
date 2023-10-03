@@ -1,4 +1,4 @@
 """Pdf CLI tools
 
-Provides two CLI script modules img2pdf, and pdfpick. See python -m
-minpdf.img2pdf -h and python -m minpdf.pifpick -h."""
+Provides two CLI script modules img2pdf, pdfpick, and jpeg. See help. For
+example, do ``python -m minpdf.img2pdf -h`` in your terminal."""
