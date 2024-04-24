@@ -5,17 +5,17 @@ from argparse import ArgumentParser
 def main(sourcefile: str, page_list: list[str], destinationfile: str) -> None:
     """Pick pages into new pdf
     
-    Appends to existing if desintation exists."""
+    Appends to existing if destination exists."""
     # Do not use context manager. Source streams must be open while writing
-    # to destination stream. `dest_pdf` both source and destination if it
-    # already exists. Therefore you need an intermediary that opens before the
+    # to destination stream `dest_pdf`. Therefore you need an intermediary
+    # that opens before the
     # sources close and closes after the destination opens, like a chain.
+    # Open destination file to append to.
     try:
         dest_pdf = Pdf.open(destinationfile)
     except:
         dest_pdf = Pdf.new()
     # Do not close because reading page contents depends on open connection.
-    # Open destination file to append to
     pdf = Pdf.open(sourcefile)
     # Parse pages
     for pagespec in page_list:

@@ -108,8 +108,10 @@ def to_realsize_pdf(imgfile, dpi:int=150, save_bytes_factor:int=1):
 def chain_pdfs(stem: str):
     '''Chains single-page PDFs into one multi-page PDF.
     
-    :param stem: Stem used to search file names to aggregate. For example,
-    'Scan_20221205' will collect 'Scan_20221205.pdf', 'Scan_20221205 (2).pdf,'
+    :param stem: Stem used to search file names to aggregate.
+     
+    For example,
+    'stem'='Scan_20221205' will collect 'Scan_20221205.pdf', 'Scan_20221205 (2).pdf,'
     etc.'''
     try:
         remove('n.pdf')
