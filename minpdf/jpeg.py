@@ -1,19 +1,26 @@
 """May reduce file size if image in pdf is not jpeg
 
 Extracts first image resource from the first page only."""
-def jpeg(source: str) -> None:
-    import pikepdf
-    largepdf = pikepdf.Pdf.open(source)
+from io import BufferedIOBase
+def write_to_jpeg(source: str, buf: BufferedIOBase) -> BufferedIOBase:
+    '''Extract first image and write to output'''
+    from pikepdf import Pdf, PdfImage
+    largepdf = Pdf.open(source)
     # Extract first image from first page
     import itertools
     page = largepdf.pages[0]
     lrawimg = [*itertools.islice(page.images.values(), 0, 1)][0]
-    lpdfimg = pikepdf.PdfImage(lrawimg)
+    lpdfimg = PdfImage(lrawimg)
     lpilimg = lpdfimg.as_pil_image()
     # Save image in jpeg format to a buffer.
+    lpilimg.save(buf, format="jpeg")
+
+def jpeg(source: str, outfile) -> None:
+    '''Extract first image and put in a new pdf'''
+    import pikepdf
     import io
     buf = io.BytesIO()
-    lpilimg.save(buf, format="jpeg")
+    write_to_jpeg(source, buf)
     # Track axis flips.
     # The reason for using 306 and 396 is that the default PDF user space
     # resolution is 72 points-per-inch. The U.S. letter is therefore 612 x 792
@@ -63,7 +70,7 @@ def jpeg(source: str) -> None:
     # y_orientation. The next and third command draws the image into a unit
     # square; the fourth command pops the stack, at which time the CTM is
     # is applied. This results in the image being placed over 612 x 792
-    # points. Finallym the image fills a U.S. letter page (8.5 x 11 in.) at 72
+    # points. Finally the image fills a U.S. letter page (8.5 x 11 in.) at 72
     # dpi.
     #
     # Output new pdf.
@@ -71,7 +78,8 @@ def jpeg(source: str) -> None:
         pikepdf.unparse_content_stream(commands)
     )
     newpdf.pages[0].mediabox = [0, 0, 612, 792]
-    newpdf.save("jpeg.pdf")
+    newpdf.save(outfile)
+
 
 if __name__ == "__main__":
     import argparse
@@ -80,6 +88,17 @@ if __name__ == "__main__":
       'source',
       help='Source pdf'
     )
+    parser.add_argument(
+        '-o', '--outfile', type=str,
+        help='Save as file, .pdf and .jpg formats supported'
+    )
     args = parser.parse_args()
-    jpeg(args.source)
-    
+    from pathlib import Path
+    path = 'jpeg.pdf'
+    if args.outfile:
+        path = Path(args.outfile)
+    if path.suffix.lower() in ['.jpg', '.jpeg']:
+        with open(path, 'wb') as f:
+            write_to_jpeg(args.source, f)
+    else:
+        jpeg(args.source, path)
